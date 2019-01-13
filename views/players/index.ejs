@@ -16,8 +16,33 @@
 	<% } %>
 	<h1><%= title %></h1>
 	<p>Welcome to <%= title %></p>
-	<p>Have an account? <a href="auth/login">Login here.</a></p>
-	<p>Don't have one? <a href="auth/register">Register here.</a></p>
+
+	<div>
+		<table>
+			<tr>
+				<th>Rank</th>
+				<th>Tag</th>
+				<th>Name</th>
+				<th>Mains</th>
+				<% if (user) { %>
+				<th>Modify</th>
+				<% } %>
+			</tr>
+			<% for (var i = 0; i < players.length; i++) { %>
+			<tr>
+				<th><%= players[i].rank %></th>
+				<th><%= players[i].sponsor %> | <%= players[i].tag %></th>
+				<th><%= players[i].name %></th>
+				<th><%= players[i].formattedMains %></th>
+				<% if (user) { %>
+				<th><a href="">Edit</a> | Delete</th>
+				<% } %>
+			</tr>
+			<% } %>
+		</table>
+	</div>
+	
+	<span>Have an account? <a href="auth/login">Login here.</a> Don't have one? <a href="auth/register">Register here.</a></span>
 </body>
 
 </html>

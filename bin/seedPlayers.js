@@ -40,7 +40,7 @@ const players = [
         name: 'Jason Zimmerman',
         tag: 'Mew2King',
         sponsor: 'Echo Fox',
-        mains: ['Marth', "Sheik"],
+        mains: ['Marth', "Sheik", "Fox"],
         rank: 5
     }
 ]

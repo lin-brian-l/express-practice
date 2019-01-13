@@ -46,7 +46,11 @@ if (process.env.NODE_ENV === 'seedPlayers') {
 var playersRouter = require('./routes/players');
 var authRouter = require('./routes/auth');
 
-app.use('/', playersRouter);
+app.get('/', function(req, res) {
+	res.redirect('/players');
+});
+
+app.use('/players', playersRouter);
 app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
