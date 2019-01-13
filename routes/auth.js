@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const emailValidator = require('email-validator');
 const mongo = require('../config/mongo');
-const db = require('../bin/www');
+const bcrypt = require('bcrypt');
 
 /* GET home page. */
 router.get('/login', function(req, res, next) {
@@ -43,10 +43,15 @@ router.post('/register', async function(req, res, next) {
         res.render('auth/register', htmlInputs);
     } else {
         try {
-
+            const saltRounds = parseInt(process.env.BCRYPT_SALTROUNDS);
+            const passwordHash = await bcrypt.hash(user.password, saltRounds);
+            user.passwordHash = passwordHash;
+            delete user.password;
+            delete user.passwordConfirm;
             const db = await mongo.connectToDB();
             await db.collection('users').insertOne(user);
             return res.json({success: true});
+
         } catch (error) {
             res.render('error', { message: error.message, error });
         }
