@@ -4,11 +4,24 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var bodyParser = require('body-parser');
+const expressSession = require('express-session');
 
 var app = express();
+
+const passport = require('passport');
+require('./config/passport')(passport);
+
 app.use(bodyParser.json());
+app.use(expressSession({
+	secret: process.env.SECRET,
+	resave: true,
+	saveUninitialized: true,
+	duration: 1000 * 60 * 60, // 1 hour in milliseconds
+	activeDuration: 1000 * 60 * 30 // 30 min in milliseconds
+}))
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

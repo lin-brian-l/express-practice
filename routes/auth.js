@@ -3,13 +3,29 @@ const router = express.Router();
 const emailValidator = require('email-validator');
 const mongo = require('../config/mongo');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 
 /* GET home page. */
-router.get('/login', function(req, res, next) {
-  res.render('auth/login', { title: 'Login' });
+router.get('/login', function (req, res, next) {
+    const user = {
+        email: "",
+        password: ""
+    }
+    const htmlInputs = {
+        title: 'Login',
+        user,
+        errors: null
+    }
+    res.render('auth/login', htmlInputs);
 });
 
-router.get('/register', function(req, res, next) {
+router.post('/login', passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/auth/login',
+    failureFlash: false
+}));
+
+router.get('/register', function (req, res, next) {
     const user = {
         username: "",
         email: "",
@@ -24,7 +40,7 @@ router.get('/register', function(req, res, next) {
     res.render('auth/register', htmlInputs);
 });
 
-router.post('/register', async function(req, res, next) {
+router.post('/register', async function (req, res, next) {
     const user = req.body;
     let errors = [];
     if (!emailValidator.validate(user.email)) {
@@ -41,21 +57,22 @@ router.post('/register', async function(req, res, next) {
             errors
         }
         res.render('auth/register', htmlInputs);
-    } else {
-        try {
-            const saltRounds = parseInt(process.env.BCRYPT_SALTROUNDS);
-            const passwordHash = await bcrypt.hash(user.password, saltRounds);
-            user.passwordHash = passwordHash;
-            delete user.password;
-            delete user.passwordConfirm;
-            const db = await mongo.connectToDB();
-            await db.collection('users').insertOne(user);
-            return res.json({success: true});
+        return;
+    }
 
-        } catch (error) {
-            res.render('error', { message: error.message, error });
-        }
-        res.json({success: true});
+    try {
+
+        const saltRounds = parseInt(process.env.BCRYPT_SALTROUNDS);
+        const passwordHash = await bcrypt.hash(user.password, saltRounds);
+        user.passwordHash = passwordHash;
+        delete user.password;
+        delete user.passwordConfirm;
+        const db = await mongo.connectToDB();
+        await db.collection('Users').insertOne(user);
+        return res.json({ success: true });
+
+    } catch (error) {
+        res.render('error', { message: error.message, error });
     }
 
 })
