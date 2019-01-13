@@ -8,8 +8,8 @@ const passport = require('passport');
 /* GET home page. */
 router.get('/login', function (req, res, next) {
     const user = {
-        email: "",
-        password: ""
+        email: "admin@admin.com",
+        password: "1234"
     }
     const htmlInputs = {
         title: 'Login',
@@ -36,7 +36,7 @@ router.get('/register', function (req, res, next) {
         title: 'Register',
         user,
         errors: null
-    }
+    };
     res.render('auth/register', htmlInputs);
 });
 
@@ -65,11 +65,22 @@ router.post('/register', async function (req, res, next) {
         const saltRounds = parseInt(process.env.BCRYPT_SALTROUNDS);
         const passwordHash = await bcrypt.hash(user.password, saltRounds);
         user.passwordHash = passwordHash;
+        const userLoginData = {
+            email: user.email,
+            password: user.password
+        }
         delete user.password;
         delete user.passwordConfirm;
         const db = await mongo.connectToDB();
         await db.collection('Users').insertOne(user);
-        return res.json({ success: true });
+        userLoginData._id = user._id;
+        req.login(userLoginData, (err) => {
+            if (!err) {
+                res.redirect('/');
+            } else {
+                res.render('error', { message: err.message, error: err });
+            }
+        });
 
     } catch (error) {
         res.render('error', { message: error.message, error });

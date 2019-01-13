@@ -1,8 +1,17 @@
 exports.formatPlayers = function(players) {
     return players.map(player => {
         player.formattedMains = formatMains(player.mains);
+        player.formattedTag = formatTags(player.sponsor, player.tag);
         return player;
     });
+}
+
+formatTags = function(sponsor, tag) {
+    if (sponsor) {
+        return `${sponsor} | ${tag}`;
+    } else {
+        return tag;
+    }
 }
 
 formatMains = function(mains) {
@@ -17,3 +26,9 @@ formatMains = function(mains) {
         return outputString;
     }, "");
 }
+
+exports.formatFormMains = function(formInput) {
+    return formInput.split(' ').map(mains => {
+        return mains.replace(/,/g, '');
+    });
+};

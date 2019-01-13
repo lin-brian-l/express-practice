@@ -9,14 +9,16 @@
 </head>
 
 <body>
-	<% if (user) { %>
+	<% if (isLoggedIn) { %>
 	<div>
 		<span>Welcome, <%= user.username %></span>
 	</div>
 	<% } %>
 	<h1><%= title %></h1>
 	<p>Welcome to <%= title %></p>
-
+	<% if (user) { %>
+	<a href="/players/new">Add a player.</a>
+	<% } %>
 	<div>
 		<table>
 			<tr>
@@ -24,17 +26,17 @@
 				<th>Tag</th>
 				<th>Name</th>
 				<th>Mains</th>
-				<% if (user) { %>
+				<% if (isLoggedIn) { %>
 				<th>Modify</th>
 				<% } %>
 			</tr>
 			<% for (var i = 0; i < players.length; i++) { %>
 			<tr>
 				<th><%= players[i].rank %></th>
-				<th><%= players[i].sponsor %> | <%= players[i].tag %></th>
+				<th><%= players[i].formattedTag %></th>
 				<th><%= players[i].name %></th>
 				<th><%= players[i].formattedMains %></th>
-				<% if (user) { %>
+				<% if (isLoggedIn) { %>
 				<th><a href="">Edit</a> | Delete</th>
 				<% } %>
 			</tr>
@@ -42,7 +44,7 @@
 		</table>
 	</div>
 	
-	<span>Have an account? <a href="auth/login">Login here.</a> Don't have one? <a href="auth/register">Register here.</a></span>
+	<span>Have an account? <a href="../auth/login">Login here.</a> Don't have one? <a href="../auth/register">Register here.</a></span>
 </body>
 
 </html>
