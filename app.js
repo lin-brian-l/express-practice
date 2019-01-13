@@ -33,6 +33,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Seed Scripts
+if (process.env.NODE_ENV === 'seedPlayers') {
+	const seedPlayers = require('./bin/seedPlayers');
+	(async () => {
+		await seedPlayers.reseedPlayers();
+		process.exit(0);
+	})();
+}
+
 // Routes
 var playersRouter = require('./routes/players');
 var authRouter = require('./routes/auth');
