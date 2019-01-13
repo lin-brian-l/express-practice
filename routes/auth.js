@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const emailValidator = require('email-validator');
-const mongodb = require('mongodb');
-const client = mongodb.MongoClient;
+const mongo = require('../config/mongo');
+const db = require('../bin/www');
 
 /* GET home page. */
 router.get('/login', function(req, res, next) {
@@ -43,12 +43,10 @@ router.post('/register', async function(req, res, next) {
         res.render('auth/register', htmlInputs);
     } else {
         try {
-            
-            const conn = await client.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-            const db = conn.db('express-practice');
+
+            const db = await mongo.connectToDB();
             await db.collection('users').insertOne(user);
             return res.json({success: true});
-
         } catch (error) {
             res.render('error', { message: error.message, error });
         }
