@@ -90,6 +90,17 @@ router.put('/:id', redirectHelper.isLoggedIn, async (req, res, next) => {
 	} catch (error) {
 		res.render('error', { message: error.message, error });
 	}
-})
+});
+
+router.delete('/:id', async (req, res, next) => {
+	const playerId = req.params.id;
+	try {
+		const db = await mongo.connectToDB();
+		await db.collection('Players').deleteOne({ _id: mongodb.ObjectID(playerId) });
+		return res.redirect('/players');
+	} catch (error) {
+		res.render('error', { message: error.message, error });
+	}
+});
 
 module.exports = router;

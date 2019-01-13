@@ -37,7 +37,13 @@
 				<th><%= players[i].name %></th>
 				<th><%= players[i].formattedMains %></th>
 				<% if (isLoggedIn) { %>
-				<th><a href="/players/<%= players[i]._id %>">Edit</a> | Delete</th>
+				<th>
+					<a href="/players/<%= players[i]._id %>">Edit</a> | 
+					<form method="POST" action="/players/<%= players[i]._id %>" enctype="application/x-www-form-urlencoded">
+						<input type="hidden" name="_method" value="delete">
+						<input class="link-input" type="submit" value="Delete">
+					</form>
+				</th>
 				<% } %>
 			</tr>
 			<% } %>
