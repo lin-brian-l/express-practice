@@ -9,6 +9,11 @@
 </head>
 
 <body>
+	<% if (user) { %>
+	<div>
+		<span>Welcome, <%= user.username %></span>
+	</div>
+	<% } %>
 	<h1><%= title %></h1>
 	<p>Welcome to <%= title %></p>
 	<p>Have an account? <a href="auth/login">Login here.</a></p>

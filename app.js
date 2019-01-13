@@ -34,12 +34,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var playersRouter = require('./routes/players');
 var authRouter = require('./routes/auth');
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', playersRouter);
 app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
