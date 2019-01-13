@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		<%= title %>
+	</title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+	<h1><%= title %></h1>
+    <p>Welcome to <%= title %>.</p>
+    <% if (errors) { %>
+        <% include ../partials/errors %>
+    <% } %> 
+    <div>
+        <form method='POST' action='register'>
+            <div>
+                <span>Username</span>
+                <input type="text" name="username" value="<%= user.username %>">
+            </div>
+            <div>
+                <span>Email Address</span>
+                <input type="text" name="email" value="<%= user.email %>">
+            </div>
+            <div>
+                <span>Password</span>
+                <input type="password" name="password" value="<%= user.password %>">
+            </div>
+            <div>
+                <span>Confirm Password</span>
+                <input type="password" name="passwordConfirm" value = "<%= user.passwordConfirm %>">
+            </div>
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</body>
+
+</html>
