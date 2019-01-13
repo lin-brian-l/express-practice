@@ -15,9 +15,10 @@
         <% include ../partials/errors %>
     <% } %> 
     <div>
-        <form method='POST' action='/players'>
+        <form method='POST' action='/players/<%= player._id %>' enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="_method" value="put">
             <% include ../partials/playerForm %>
-            <input type="submit" value="Create Player">
+            <input type="submit" value="Edit Player">
         </form>
     </div>
 </body>

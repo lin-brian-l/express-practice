@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 const expressSession = require('express-session');
+const methodOverride = require('method-override');
 
 var app = express();
 
@@ -13,6 +14,15 @@ const passport = require('passport');
 require('./config/passport')(passport);
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride((req, res) => {
+	if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+		const method = req.body._method;
+		delete req.body._method;
+		return method;
+	}
+}));
+
 app.use(expressSession({
 	secret: process.env.SECRET,
 	resave: true,

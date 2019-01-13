@@ -37,7 +37,7 @@
 				<th><%= players[i].name %></th>
 				<th><%= players[i].formattedMains %></th>
 				<% if (isLoggedIn) { %>
-				<th><a href="">Edit</a> | Delete</th>
+				<th><a href="/players/<%= players[i]._id %>">Edit</a> | Delete</th>
 				<% } %>
 			</tr>
 			<% } %>

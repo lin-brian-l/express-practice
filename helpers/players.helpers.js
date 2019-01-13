@@ -1,6 +1,6 @@
 exports.formatPlayers = function(players) {
     return players.map(player => {
-        player.formattedMains = formatMains(player.mains);
+        player.formattedMains = exports.formatMains(player.mains);
         player.formattedTag = formatTags(player.sponsor, player.tag);
         return player;
     });
@@ -14,7 +14,7 @@ formatTags = function(sponsor, tag) {
     }
 }
 
-formatMains = function(mains) {
+exports.formatMains = function(mains) {
     return mains.reduce((outputString, main, index) => {
         if (index === 0) {
             outputString = main;
